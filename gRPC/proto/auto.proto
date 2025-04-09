@@ -1,0 +1,41 @@
+syntax = "proto3";
+option go_package = "/auth";
+
+// proto 에서는 고유한 필드 값에 숫자를 지정해야 함. 숫자는 중복되어서는 안됨
+message AuthData {
+  string name = 1;
+  string token = 2;
+  int64 createDate = 3;
+  int64 expireDate = 4;
+}
+
+message Verify {
+  ResponseType status = 1;
+  AuthData auth = 2;
+}
+
+enum ResponseType {
+  SUCCESS = 0;
+  FAILED = 1;
+  EXPIRED_DATE = 2;
+}
+
+message CreateTokenReq {
+  AuthData auth = 1;
+}
+
+message CreateTokenRes {
+  AuthData auth = 1;
+}
+
+message VerifyTokenReq {
+}
+
+message VerifyTokenRes {
+}
+
+
+service AuthService {
+  rpc CreateAuth(CreateTokenReq) returns (CreateTokenRes);
+  rpc VerifyAuth(VerifyTokenReq) returns (VerifyTokenRes);
+}
