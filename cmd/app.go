@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"grpc-practice/config"
+	"grpc-practice/gRPC/client"
 	"grpc-practice/network"
 	"grpc-practice/repository"
 	"grpc-practice/service"
@@ -11,6 +12,7 @@ import (
 type App struct {
 	cfg *config.Config
 
+	gRPCClient *client.GRPCClient
 	network    *network.Network
 	service    *service.Service
 	repository *repository.Repository
@@ -28,7 +30,12 @@ func NewApp(cfg *config.Config) *App {
 		log.Fatalf("failed init service, err : %v", err)
 	}
 
-	net, err := network.NewNetwork(cfg, serv)
+	grpcClient, err := client.NEWGRPCClient(cfg)
+	if err != nil {
+		log.Fatalf("failed init grpc client, err : %v", err)
+	}
+
+	net, err := network.NewNetwork(cfg, serv, grpcClient)
 	if err != nil {
 		log.Fatalf("failed init network, err : %v", err)
 	}
