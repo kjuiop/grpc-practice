@@ -1,7 +1,6 @@
 syntax = "proto3";
 option go_package = "/auth";
 
-// proto 에서는 고유한 필드 값에 숫자를 지정해야 함. 숫자는 중복되어서는 안됨
 message AuthData {
   string name = 1;
   string token = 2;
@@ -29,11 +28,12 @@ message CreateTokenRes {
 }
 
 message VerifyTokenReq {
+  string token = 1;
 }
 
 message VerifyTokenRes {
+  Verify v = 1;
 }
-
 
 service AuthService {
   rpc CreateAuth(CreateTokenReq) returns (CreateTokenRes);

@@ -70,7 +70,6 @@ func (ResponseType) EnumDescriptor() ([]byte, []int) {
 	return file_gRPC_proto_auth_proto_rawDescGZIP(), []int{0}
 }
 
-// proto 에서는 고유한 필드 값에 숫자를 지정해야 함. 숫자는 중복되어서는 안됨
 type AuthData struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -281,6 +280,7 @@ func (x *CreateTokenRes) GetAuth() *AuthData {
 
 type VerifyTokenReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -315,8 +315,16 @@ func (*VerifyTokenReq) Descriptor() ([]byte, []int) {
 	return file_gRPC_proto_auth_proto_rawDescGZIP(), []int{4}
 }
 
+func (x *VerifyTokenReq) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
 type VerifyTokenRes struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	V             *Verify                `protobuf:"bytes,1,opt,name=v,proto3" json:"v,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -351,6 +359,13 @@ func (*VerifyTokenRes) Descriptor() ([]byte, []int) {
 	return file_gRPC_proto_auth_proto_rawDescGZIP(), []int{5}
 }
 
+func (x *VerifyTokenRes) GetV() *Verify {
+	if x != nil {
+		return x.V
+	}
+	return nil
+}
+
 var File_gRPC_proto_auth_proto protoreflect.FileDescriptor
 
 const file_gRPC_proto_auth_proto_rawDesc = "" +
@@ -371,9 +386,11 @@ const file_gRPC_proto_auth_proto_rawDesc = "" +
 	"\x0eCreateTokenReq\x12\x1d\n" +
 	"\x04auth\x18\x01 \x01(\v2\t.AuthDataR\x04auth\"/\n" +
 	"\x0eCreateTokenRes\x12\x1d\n" +
-	"\x04auth\x18\x01 \x01(\v2\t.AuthDataR\x04auth\"\x10\n" +
-	"\x0eVerifyTokenReq\"\x10\n" +
-	"\x0eVerifyTokenRes*9\n" +
+	"\x04auth\x18\x01 \x01(\v2\t.AuthDataR\x04auth\"&\n" +
+	"\x0eVerifyTokenReq\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\"'\n" +
+	"\x0eVerifyTokenRes\x12\x15\n" +
+	"\x01v\x18\x01 \x01(\v2\a.VerifyR\x01v*9\n" +
 	"\fResponseType\x12\v\n" +
 	"\aSUCCESS\x10\x00\x12\n" +
 	"\n" +
@@ -413,15 +430,16 @@ var file_gRPC_proto_auth_proto_depIdxs = []int32{
 	1, // 1: Verify.auth:type_name -> AuthData
 	1, // 2: CreateTokenReq.auth:type_name -> AuthData
 	1, // 3: CreateTokenRes.auth:type_name -> AuthData
-	3, // 4: AuthService.CreateAuth:input_type -> CreateTokenReq
-	5, // 5: AuthService.VerifyAuth:input_type -> VerifyTokenReq
-	4, // 6: AuthService.CreateAuth:output_type -> CreateTokenRes
-	6, // 7: AuthService.VerifyAuth:output_type -> VerifyTokenRes
-	6, // [6:8] is the sub-list for method output_type
-	4, // [4:6] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	2, // 4: VerifyTokenRes.v:type_name -> Verify
+	3, // 5: AuthService.CreateAuth:input_type -> CreateTokenReq
+	5, // 6: AuthService.VerifyAuth:input_type -> VerifyTokenReq
+	4, // 7: AuthService.CreateAuth:output_type -> CreateTokenRes
+	6, // 8: AuthService.VerifyAuth:output_type -> VerifyTokenRes
+	7, // [7:9] is the sub-list for method output_type
+	5, // [5:7] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_gRPC_proto_auth_proto_init() }
