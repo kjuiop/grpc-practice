@@ -20,7 +20,12 @@ type App struct {
 
 func NewApp(cfg *config.Config) *App {
 
-	repo, err := repository.NewRepository(cfg)
+	grpcClient, err := client.NEWGRPCClient(cfg)
+	if err != nil {
+		log.Fatalf("failed init grpc client, err : %v", err)
+	}
+
+	repo, err := repository.NewRepository(cfg, grpcClient)
 	if err != nil {
 		log.Fatalf("failed init repository, err : %v", err)
 	}
@@ -28,11 +33,6 @@ func NewApp(cfg *config.Config) *App {
 	serv, err := service.NewService(cfg, repo)
 	if err != nil {
 		log.Fatalf("failed init service, err : %v", err)
-	}
-
-	grpcClient, err := client.NEWGRPCClient(cfg)
-	if err != nil {
-		log.Fatalf("failed init grpc client, err : %v", err)
 	}
 
 	net, err := network.NewNetwork(cfg, serv, grpcClient)

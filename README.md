@@ -1,5 +1,7 @@
 # grpc-practice
 
+- [1000만 Traffic을 견디며 적용한 RPC 통신에 대해 학습하고 구현해보기](https://www.inflearn.com/course/%EB%8C%80%EC%9A%A9%EB%9F%89-tps-%EB%8C%80%EB%B9%84-rpc-%ED%86%B5%EC%8B%A0/dashboard)
+
 ### Prerequisites
 
 ```go

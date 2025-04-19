@@ -24,11 +24,18 @@ func NewNetwork(cfg *config.Config, service *service.Service, grpcClient *client
 		engine:     gin.New(),
 	}
 
+	// 1. token 생성 api
+	n.engine.POST("/login", n.Login)
+
+	n.engine.GET("/verify", n.verifyLogin(), n.Verify)
+
+	// 2. token 검증 api
+
 	return n, nil
 }
 
 func (n *Network) StartServer() {
-	if err := n.engine.Run(":8080"); err != nil {
+	if err := n.engine.Run(":8081"); err != nil {
 		log.Fatalf("failed to start server: %v", err)
 	}
 }

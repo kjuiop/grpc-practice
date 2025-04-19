@@ -2,6 +2,7 @@ package service
 
 import (
 	"grpc-practice/config"
+	auth "grpc-practice/gRPC/proto"
 	"grpc-practice/repository"
 )
 
@@ -18,4 +19,8 @@ func NewService(cfg *config.Config, repository *repository.Repository) (*Service
 	}
 
 	return s, nil
+}
+
+func (s *Service) CreateAuth(name string) (*auth.AuthData, error) {
+	return s.repository.CreateAuth(name)
 }

@@ -2,6 +2,8 @@ package server
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"grpc-practice/config"
@@ -58,17 +60,20 @@ func (g *GRPCServer) VerifyAuth(ctx context.Context, req *auth.VerifyTokenReq) (
 		},
 	}
 
-	if authData, ok := g.tokenVerifyMap[token]; ok {
+	if authData, ok := g.tokenVerifyMap[token]; !ok {
 		res.V.Status = auth.ResponseType_FAILED
+		return res, errors.New("not Existed At TokenVerifyMap")
+	} else if err := g.pasetoMaker.VerifyToken(token); err != nil {
+		return res, fmt.Errorf("failed verify token, err : %w", err)
 	} else if authData.ExpireDate < time.Now().Unix() {
 		// 만료된 토큰이기 때문에 재 로그인을 위해 토큰 삭제
 		delete(g.tokenVerifyMap, token)
 		res.V.Status = auth.ResponseType_EXPIRED_DATE
+		return res, errors.New("expired Token")
 	} else {
 		res.V.Status = auth.ResponseType_SUCCESS
+		return res, nil
 	}
-
-	return res, nil
 }
 
 func (g *GRPCServer) mustEmbedUnimplementedAuthServiceServer() {
